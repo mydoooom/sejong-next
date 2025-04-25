@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@firebase/auth": "^1.10.1",
     "@hedgedoc/html-to-react": "^1.4.6",
     "@mui/icons-material": "^5.14.11",
     "@mui/lab": "^5.0.0-alpha.146",
