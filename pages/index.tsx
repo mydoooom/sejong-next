@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query'
 import { shuffle } from 'lodash'
 import { InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
@@ -17,6 +18,7 @@ import AboutTaekwondo from '../components/landing-page/AboutTaekwondo'
 import TrainingSessions from '../components/landing-page/TrainingSessions'
 import PriceList from '../components/landing-page/PriceList'
 import Contact from '../components/landing-page/Contact'
+import Merch from '../components/landing-page/Merch'
 
 export default function Home ({
   heroImageURLs,
@@ -35,7 +37,7 @@ export default function Home ({
         <meta property="og:title" content="Sejong Taekwondo"/>
         <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/sejong-web.appspot.com/o/images%2FogImg.png?alt=media&token=d38e0436-e425-4218-8223-e157ba171bdd"/>
         <meta name="og:image:alt" content="Sejong Taekwondo"/>
-        <meta property="og:url" content="http://www.sejong.cz"/>
+        <meta property="og:url" content="https://www.sejong.cz"/>
         <meta property="og:description" content="Sejong Taekwondo – sportovní klub Taekwondo WT v Praze"/>
         <meta property="og:site_name" content="Sejong Taekwondo"/>
         <link rel="icon" href="/favicon.png"/>
@@ -49,6 +51,7 @@ export default function Home ({
       <AboutTaekwondo/>
       <TrainingSessions gMapsApiKey={gMapsApiKey!}/>
       <PriceList/>
+      <Merch/>
       <Contact/>
     </>
   )
@@ -79,7 +82,7 @@ export async function getStaticProps (context: { locale: string }) {
         'price-list',
         'contact'
       ])),
-      gMapsApiKey: process.env.GMAPS_API_KEY
+      gMapsApiKey: process.env.GMAPS_API_KEY ?? ""
     }
   }
 }

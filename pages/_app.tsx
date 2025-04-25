@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { collection, orderBy, query } from 'firebase/firestore'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from '@mui/material/styles'
@@ -14,26 +15,29 @@ import '../styles/globals.scss'
 
 function App ({ Component, pageProps }: AppProps) {
   const authState = useAuthState(auth)
+  const queryClient = new QueryClient();
 
   const articlesCollection = useCollection(query(
-    collection(db, 'news' ),
+    collection(db, 'news'),
     orderBy('timestamp', 'desc')
   ))
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <UserContext.Provider value={authState}>
-          <Navigation/>
-          <div className='site'>
-            <NewsContext.Provider value={articlesCollection}>
-              <Component {...pageProps} />
-            </NewsContext.Provider>
-          </div>
-          <Footer/>
-        </UserContext.Provider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
+          <UserContext.Provider value={authState}>
+            <Navigation/>
+            <div className='site'>
+              <NewsContext.Provider value={articlesCollection}>
+                <Component {...pageProps} />
+              </NewsContext.Provider>
+            </div>
+            <Footer/>
+          </UserContext.Provider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
   )
 }

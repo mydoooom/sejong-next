@@ -7,7 +7,7 @@ $breakpoints: ('xs': 0px,'sm': 600px, 'md': 900px, 'lg': 1180px, 'xl': 1536px);
 /// @return {Number} - Number without a unit
 @function strip-unit($number) {
   @if type-of($number) == 'number' and not unitless($number) {
-    @return $number / ($number * 0 + 1);
+    @return calc($number / ($number * 0 + 1px));
   }
 
   @return $number;

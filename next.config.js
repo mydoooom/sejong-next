@@ -20,6 +20,11 @@ const nextConfig = {
         hostname: 'firebasestorage.googleapis.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'oucepbeonujhgfgcgoqw.supabase.co',
+        port: '',
+      }
     ],
   },
   compiler: {

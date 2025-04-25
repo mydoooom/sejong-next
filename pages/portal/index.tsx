@@ -2,6 +2,7 @@ import { CalendarMonth, Folder, Groups2, Newspaper, Web } from '@mui/icons-mater
 import { ReactElement, ReactNode, SyntheticEvent, useState } from 'react'
 import { Box, Container, Paper, Tab, Tabs } from '@mui/material'
 import Head from 'next/head'
+import ContentPanel from '../../components/portal/ContentPanel'
 import NewsPanel from '../../components/portal/NewsPanel'
 import AuthCheck from '../../components/portal/AuthCheck'
 
@@ -14,7 +15,7 @@ const tabs: { label: string, icon: ReactElement, component: ReactNode }[] = [
   {
     label: 'Obsah',
     icon: <Web/>,
-    component: 'Obsah'
+    component: <ContentPanel/>,
   },
   {
     label: 'Členové',
@@ -66,7 +67,7 @@ const a11yProps = (index: number) => {
 export default function Portal () {
   const [currentTab, setCurrentTab] = useState(0)
 
-  const handleChangeTab = (event: SyntheticEvent, newValue: number) => {
+  const handleChangeTab = (_event: SyntheticEvent, newValue: number) => {
     setCurrentTab(newValue)
   }
 
@@ -83,6 +84,7 @@ export default function Portal () {
           <Paper variant='outlined' elevation={0}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs
+
                 value={currentTab}
                 onChange={handleChangeTab}
                 variant='scrollable'
