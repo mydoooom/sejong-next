@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Grid } from '@mui/material'
+import { Card, CardContent, Grid } from '@mui/material'
 import Image from 'next/image'
 import { useMerch } from '../../lib/useMerch'
 import { Heading } from './Heading'
@@ -7,7 +7,7 @@ import styles from './Merch.module.scss'
 interface MerchItemProps {
   id: string
   name: string
-  image: string
+  image: string | null
 }
 
 const MerchItem = ({ id, image, name }: MerchItemProps) => {
@@ -32,7 +32,7 @@ export default function Merch () {
       <Heading text={"Merch"}/>
       <Grid container spacing={0} sx={{justifyContent: "center"}}>
         {isLoading ? <p>Loading...</p> : error ? <p>Error: {error.message}</p> : (
-          merch?.map((item: any) => (
+          merch?.map((item) => (
             <Grid key={item.id}>
             <MerchItem
 
