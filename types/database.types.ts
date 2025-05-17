@@ -102,6 +102,7 @@ export type Database = {
       }
       merch: {
         Row: {
+          archived: boolean
           category_id: string
           created_at: string
           description: string | null
@@ -110,6 +111,7 @@ export type Database = {
           name: string
         }
         Insert: {
+          archived: boolean
           category_id?: string
           created_at?: string
           description?: string | null
@@ -118,6 +120,7 @@ export type Database = {
           name: string
         }
         Update: {
+          archived?: boolean
           category_id?: string
           created_at?: string
           description?: string | null

@@ -50,14 +50,16 @@ section {
   padding-bottom: 4rem;
 }
 
-table {
+// Add this to globals.scss
+table:not([class*="MuiTable"]) {
   border-collapse: collapse;
 }
 
-tbody, td, th {
+tbody:not([class*="MuiTableBody"]),
+td:not([class*="MuiTableCell"]),
+th:not([class*="MuiTableCell"]) {
   border: 1px solid darkgray;
   padding: 0 .5rem;
-
 }
 
 [class*="MuiSvgIcon"] {
