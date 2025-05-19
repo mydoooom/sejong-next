@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../supabase'
 import { Tables } from '../types/database.types'
+import { useRouter } from 'next/router'
 
 export type MerchMutation =  Omit<Tables<'merch'>, 'id' | 'created_at'>
 
@@ -20,11 +21,13 @@ const insertMerch = async (newMerch: MerchMutation) => {
 
 export const useMerchMutation = () => {
   const queryClient = useQueryClient()
+  const { push } = useRouter()
 
   return useMutation({
     mutationFn: insertMerch,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['merch'] })
+      void push('/portal')
     },
   })
 }
