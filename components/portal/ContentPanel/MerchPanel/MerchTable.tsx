@@ -1,11 +1,13 @@
-import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, TableCell } from '@mui/material'
+import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Button } from '@mui/material'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { createColumnHelper } from '@tanstack/table-core'
 import Image from 'next/image'
-import { Merch } from "../../../../lib/useMerch"
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { MerchWithCategories } from "../../../../lib/useMerch"
 import styles from './MerchTable.module.scss'
 
-const columnHelper = createColumnHelper<Merch>()
+const columnHelper = createColumnHelper<MerchWithCategories>()
 
 const columns = [
   columnHelper.accessor('image_url', {
@@ -37,11 +39,19 @@ const columns = [
     cell: info => (
       <div className={`${styles.dot} ${!info.getValue() ? styles.hidden : ""}`}></div>
     )
+  }),
+  columnHelper.accessor('id', {
+    header: "Akce",
+    cell: props => (
+      <Button>
+        <Link href={`portal/edit-merch/${props.getValue()}`}>Editovat</Link>
+      </Button>
+    )
   })
 ]
 
 interface MerchPreviewCardProps {
-  merch: Merch[]
+  merch: MerchWithCategories[]
 }
 
 export function MerchTable ({ merch }: MerchPreviewCardProps) {

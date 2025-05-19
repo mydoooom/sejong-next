@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../supabase'
 import { Tables } from '../types/database.types'
 
-// Define the type for the joined data structure
-type MerchWithCategories = Tables<'merch'> & {
+export type Merch = Tables<'merch'>
+export type MerchWithCategories = Tables<'merch'> & {
   merch_categories: Pick<Tables<'merch_categories'>, 'name'>
 }
 
@@ -22,6 +22,3 @@ export const useMerch = () => useQuery<MerchWithCategories[], Error>({
   queryKey: ['merch'],
   queryFn: fetchMerch,
 })
-
-// Export the type directly
-export type Merch = MerchWithCategories

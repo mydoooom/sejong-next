@@ -15,18 +15,26 @@ import { Controller, useForm } from 'react-hook-form'
 import { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import { useMerchCategories } from '../../../../lib/useMerchCategories'
-import { MerchMutation, useMerchMutation } from '../../../../lib/useMerchMutation'
+import { MerchInsert, useMerchMutation } from '../../../../lib/useMerchMutation'
 import { supabase } from '../../../../supabase'
+import { Merch } from '../../../../lib/useMerch'
 
-export function MerchForm () {
+interface MerchFormProps {
+  editMode?: boolean
+  merch?: Merch
+}
+
+export function MerchForm ({ editMode, merch }: MerchFormProps) {
   const { data: merchCategories } = useMerchCategories()
-  const { formState, watch, control, handleSubmit } = useForm<MerchMutation>({
-    defaultValues: {
+  const {  control, handleSubmit } = useForm<MerchInsert>({
+    defaultValues: editMode && merch ? {
+      ...merch
+      } : {
       name: '',
       description: '',
       image_url: null,
       archived: false,
-      category_id: ''
+      category_id: '',
     }
   })
 
@@ -43,7 +51,7 @@ export function MerchForm () {
     setTemporaryImageUrl(URL.createObjectURL(file))
   }
 
-  const onSubmit = async (data: MerchMutation) => {
+  const onSubmit = async (data: MerchInsert) => {
     if (imageToBeUploaded) {
       const fileName = `${Date.now()}_${imageToBeUploaded.name}`;
       const {

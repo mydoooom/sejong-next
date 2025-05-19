@@ -3,20 +3,40 @@ import { supabase } from '../supabase'
 import { Tables } from '../types/database.types'
 import { useRouter } from 'next/router'
 
-export type MerchMutation =  Omit<Tables<'merch'>, 'id' | 'created_at'>
+export type MerchInsert =  Omit<Tables<'merch'>, 'id' | 'created_at'>
+export type MerchUpdate = Omit<Tables<'merch'>, 'created_at'>
 
-const insertMerch = async (newMerch: MerchMutation) => {
-  const { data, error } = await supabase
-    .from('merch')
-    .insert(newMerch)
-    .select('*')
-    .single()
+type MutateMerch = MerchInsert | MerchUpdate
+const mutateMerch = async (data: MutateMerch) => {
+  if ('id' in data) {
+    const { data: result, error } = await supabase
+      .from('merch')
+      .update(data)
+      .eq('id', data.id)
+      .select('*')
+      .single()
 
-  if (error) {
+    if (error) {
+      throw error
+    }
 
-    throw error
+    return result
+
+  } else {
+    // Insert new row
+    const { data: result, error } = await supabase
+      .from('merch')
+      .insert(data)
+      .select('*')
+      .single()
+
+    if (error) {
+      throw error
+    }
+
+    return result
   }
-  return data
+
 }
 
 export const useMerchMutation = () => {
@@ -24,7 +44,7 @@ export const useMerchMutation = () => {
   const { push } = useRouter()
 
   return useMutation({
-    mutationFn: insertMerch,
+    mutationFn: mutateMerch,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['merch'] })
       void push('/portal')
