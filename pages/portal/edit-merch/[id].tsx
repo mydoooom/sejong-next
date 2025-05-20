@@ -19,9 +19,6 @@ export default function EditMerch() {
   }
 
   return (
-    <>
       <MerchForm editMode merch={data}/>
-    </>
   )
 }
-

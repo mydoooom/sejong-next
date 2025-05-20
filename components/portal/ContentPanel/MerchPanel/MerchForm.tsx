@@ -99,7 +99,7 @@ export function MerchForm ({ editMode, merch }: MerchFormProps) {
               control={control}
               render={({ field }) => (
                 <FormGroup>
-                  <FormControlLabel control={<Checkbox {...field}/>} label='Zobrazit'/>
+                  <FormControlLabel control={<Checkbox {...field}/>} label='Archivovat'/>
                 </FormGroup>
               )}
             />

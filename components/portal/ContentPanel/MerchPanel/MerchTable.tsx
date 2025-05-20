@@ -3,65 +3,73 @@ import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-tabl
 import { createColumnHelper } from '@tanstack/table-core'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useDeleteMerchItem } from '../../../../lib/useDeleteMerchItem'
 import { MerchWithCategories } from "../../../../lib/useMerch"
 import styles from './MerchTable.module.scss'
 
-const columnHelper = createColumnHelper<MerchWithCategories>()
 
-const columns = [
-  columnHelper.accessor('image_url', {
-    header: "Obrázek",
-    cell: info => (
-      <Image
-        src={info.getValue() || ""}
-        alt={info.row.getValue("name")}
-        width={100}
-        height={70}
-        className={styles.merchItemImage}
-      />
-    )
-  }),
-  columnHelper.accessor('name', {
-    header: "Název",
-    cell: info => info.getValue()
-  }),
-  // columnHelper.accessor('description', {
-  //   header: "Popis",
-  //   cell: info => info.getValue()
-  // }),
-  columnHelper.accessor('merch_categories.name', {
-    header: "Kategorie",
-    cell: info => info.getValue()
-  }),
-  columnHelper.accessor('archived', {
-    header: "Viditelné",
-    cell: info => (
-      <div className={`${styles.dot} ${!info.getValue() ? styles.hidden : ""}`}></div>
-    )
-  }),
-  columnHelper.accessor('id', {
-    header: "Akce",
-    cell: props => (
-      <Button>
-        <Link href={`portal/edit-merch/${props.getValue()}`}>Editovat</Link>
-      </Button>
-    )
-  })
-]
 
 interface MerchPreviewCardProps {
   merch: MerchWithCategories[]
 }
 
 export function MerchTable ({ merch }: MerchPreviewCardProps) {
+  const { mutate: deleteMerchItem } = useDeleteMerchItem()
+
+  const columnHelper = createColumnHelper<MerchWithCategories>()
+
+  const columns = [
+    columnHelper.accessor('image_url', {
+      header: "Obrázek",
+      cell: info => (
+        <Image
+          src={info.getValue() || ""}
+          alt={info.row.getValue("name")}
+          width={100}
+          height={70}
+          className={styles.merchItemImage}
+        />
+      )
+    }),
+    columnHelper.accessor('name', {
+      header: "Název",
+      cell: info => info.getValue()
+    }),
+    // columnHelper.accessor('description', {
+    //   header: "Popis",
+    //   cell: info => info.getValue()
+    // }),
+    columnHelper.accessor('merch_categories.name', {
+      header: "Kategorie",
+      cell: info => info.getValue()
+    }),
+    columnHelper.accessor('archived', {
+      header: "Archivované",
+      cell: info => (
+        <div className={`${styles.dot} ${!info.getValue() ? styles.hidden : ""}`}></div>
+      )
+    }),
+    columnHelper.accessor('id', {
+      header: "Akce",
+      cell: props => (
+        <>
+          <Button>
+            <Link href={`portal/edit-merch/${props.getValue()}`}>Editovat</Link>
+          </Button>
+          <Button onClick={() => deleteMerchItem(props.getValue())}>
+            Smazat
+          </Button>
+        </>
+      )
+    })
+  ]
 
   const table = useReactTable({
-      data: merch,
-      columns,
-      getCoreRowModel: getCoreRowModel()
-    })
-
+    data: merch,
+    columns,
+    getCoreRowModel: getCoreRowModel()
+  })
+  
   return (
     <>
       <TableContainer component={Paper}>
