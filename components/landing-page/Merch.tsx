@@ -1,6 +1,6 @@
 import { Card, CardContent, Grid } from '@mui/material'
 import Image from 'next/image'
-import { useMerch } from '../../lib/useMerch'
+import { useMerch } from '@/api/hooks/merch/useMerch'
 import { Heading } from './Heading'
 import styles from './Merch.module.scss'
 

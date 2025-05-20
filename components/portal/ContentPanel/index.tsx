@@ -1,5 +1,4 @@
-import { CalendarMonth, Folder, Groups2, Newspaper, Web } from '@mui/icons-material'
-import { Tabs, Tab, Box, Typography } from '@mui/material'
+import { Tabs, Tab, Box } from '@mui/material'
 import { ReactNode, SyntheticEvent, useState } from 'react'
 import MerchPanel from './MerchPanel'
 

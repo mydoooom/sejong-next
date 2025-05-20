@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { supabase } from '../supabase'
+import { supabase } from '@/supabase'
 import { useRouter } from 'next/router'
 
 const deleteMerch = async (id: string) => {

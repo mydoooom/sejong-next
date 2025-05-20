@@ -14,10 +14,10 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
-import { useMerchCategories } from '../../../../lib/useMerchCategories'
-import { MerchInsert, useMerchMutation } from '../../../../lib/useMerchMutation'
-import { supabase } from '../../../../supabase'
-import { Merch } from '../../../../lib/useMerch'
+import { useMerchCategories } from '@/api/hooks/merch/useMerchCategories'
+import { MerchInsert, useMerchMutation } from '@/api/hooks/merch/useMerchMutation'
+import { Merch } from '@/api/hooks/merch/useMerch'
+import { supabase } from '@/supabase'
 
 interface MerchFormProps {
   editMode?: boolean

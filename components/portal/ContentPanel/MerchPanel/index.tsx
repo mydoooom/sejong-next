@@ -2,7 +2,7 @@ import Add from '@mui/icons-material/Add'
 import { Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useMerch } from '../../../../lib/useMerch'
+import { useMerch } from '@/api/hooks/merch/useMerch'
 import { MerchTable } from './MerchTable'
 
 export default function MerchPanel () {

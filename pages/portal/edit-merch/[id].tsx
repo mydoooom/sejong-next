@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 import { MerchForm } from '../../../components/portal/ContentPanel/MerchPanel/MerchForm'
-import { useMerchItemById } from '../../../lib/useMerchItemById'
+import { useMerchItem } from '../../../api/hooks/merch/useMerchItem'
 
 export default function EditMerch() {
   const router = useRouter()
-  const { data, error, isError, isLoading } = useMerchItemById(router.query.id as string | undefined)
+  const { data, error, isError, isLoading } = useMerchItem(router.query.id as string | undefined)
 
   if (!router.isReady || isLoading) {
     return <p>Loading...</p>

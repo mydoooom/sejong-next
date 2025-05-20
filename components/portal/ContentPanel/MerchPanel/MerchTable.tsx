@@ -3,8 +3,8 @@ import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-tabl
 import { createColumnHelper } from '@tanstack/table-core'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useDeleteMerchItem } from '../../../../lib/useDeleteMerchItem'
-import { MerchWithCategories } from "../../../../lib/useMerch"
+import { useDeleteMerchItem } from '@/api/hooks/merch/useDeleteMerchItem'
+import { MerchWithCategories } from "@/api/hooks/merch/useMerch"
 import styles from './MerchTable.module.scss'
 
 

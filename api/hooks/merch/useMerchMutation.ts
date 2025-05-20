@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { supabase } from '../supabase'
-import { Tables } from '../types/database.types'
+import { supabase } from '@/supabase'
+import { Tables } from '@/types/database.types'
 import { useRouter } from 'next/router'
 
 export type MerchInsert =  Omit<Tables<'merch'>, 'id' | 'created_at'>

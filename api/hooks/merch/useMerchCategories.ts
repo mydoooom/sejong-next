@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { supabase } from '../supabase'
-import { Tables } from '../types/database.types'
+import { supabase } from '@/supabase'
+import { Tables } from '@/types/database.types'
 
 export type MerchCategory = Tables<'merch_categories'>
 
