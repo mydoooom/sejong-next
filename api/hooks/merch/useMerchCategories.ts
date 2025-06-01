@@ -14,7 +14,8 @@ const fetchMerchCategories = async (): Promise<MerchCategory[]> => {
   return data as MerchCategory[]
 }
 
-export const useMerchCategories = () => useQuery<MerchCategory[], Error>({
+export const useMerchCategories = ({ enabled }: {enabled: boolean}) => useQuery<MerchCategory[], Error>({
   queryKey: ['categories'],
   queryFn: fetchMerchCategories,
+  enabled,
 })

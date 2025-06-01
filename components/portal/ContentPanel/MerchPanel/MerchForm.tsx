@@ -1,3 +1,4 @@
+import { Subform } from '@/components/portal/ContentPanel/MerchPanel/Subform'
 import {
   Box,
   Checkbox,
@@ -5,16 +6,15 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  MenuItem,
   Paper,
-  Select,
   TextField,
-  Button
+  Button,
+  Stack, Autocomplete
 } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
-import { ChangeEvent, useState } from 'react'
+import { Controller, useForm, useWatch } from 'react-hook-form'
+import { ChangeEvent, useMemo, useState } from 'react'
 import Image from 'next/image'
-import { useMerchCategories } from '@/api/hooks/merch/useMerchCategories'
+import { MerchCategory, useMerchCategories } from '@/api/hooks/merch/useMerchCategories'
 import { MerchInsert, useMerchMutation } from '@/api/hooks/merch/useMerchMutation'
 import { Merch } from '@/api/hooks/merch/useMerch'
 import { supabase } from '@/supabase'
@@ -25,11 +25,24 @@ interface MerchFormProps {
 }
 
 export function MerchForm ({ editMode, merch }: MerchFormProps) {
-  const { data: merchCategories } = useMerchCategories()
-  const {  control, handleSubmit } = useForm<MerchInsert>({
+  const [isCategoriesSelectOpen, setIsCategoriesSelectOpen] = useState(false)
+  const {
+    data: merchCategories,
+    isLoading: isLoadingMerchCategories,
+    isError: isErrorMerchCategories,
+    error: errorMerchCategories,
+  } = useMerchCategories({ enabled: isCategoriesSelectOpen })
+
+  const merchCategoriesMap = useMemo(() => {
+    if (!merchCategories) return new Map()
+
+    return new Map(merchCategories.map(category => [category.id, category.name]))
+  }, [merchCategories])
+
+  const { getValues, control, handleSubmit } = useForm<MerchInsert>({
     defaultValues: editMode && merch ? {
       ...merch
-      } : {
+    } : {
       name: '',
       description: '',
       image_url: null,
@@ -38,10 +51,15 @@ export function MerchForm ({ editMode, merch }: MerchFormProps) {
     }
   })
 
-  const { mutate, isPending, isError, error } = useMerchMutation()
+  const selectedCategoryId = useWatch({
+    control,
+    name: 'category_id'
+  })
 
-  const [temporaryImageUrl, setTemporaryImageUrl] = useState('')
+  const [temporaryImageUrl, setTemporaryImageUrl] = useState<string | null>(null)
   const [imageToBeUploaded, setImageToBeUploaded] = useState<File | null>(null)
+
+  const { mutate: mutateMerch } = useMerchMutation()
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return
@@ -68,8 +86,7 @@ export function MerchForm ({ editMode, merch }: MerchFormProps) {
       }
     }
 
-    mutate(data)
-
+    mutateMerch(data)
   }
 
   return (
@@ -78,22 +95,101 @@ export function MerchForm ({ editMode, merch }: MerchFormProps) {
         <Paper elevation={0} variant='outlined' sx={{ maxWidth: '50rem' }}>
           <Box
             component='form'
+            sx={{
+              m: "2rem"
+            }}
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Controller
-              name='name'
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} label='Název'/>
-              )}
-            />
-            <Controller
-              name='description'
-              control={control}
-              render={({ field }) => (
-                <TextField multiline {...field} label='Popis'/>
-              )}
-            />
+            <Stack spacing={2}>
+              <Controller
+                name='name'
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label='Název'/>
+                )}
+              />
+              <Controller
+                name='description'
+                control={control}
+                render={({ field }) => (
+                  <TextField multiline minRows={3} {...field} label='Popis'/>
+                )}
+              />
+            </Stack>
+            <Box sx={{
+              display: 'flex',
+              my: '1rem',
+              gap: '1rem',
+              alignItems: 'center',
+            }}>
+              <Box
+                sx={{
+                  width: 'auto',
+                  height: '8rem',
+                  aspectRatio: '3/2',
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                  src={temporaryImageUrl ?? '/image-placeholder.svg'} width={200} height={200} alt='uploaded image'/>
+
+              </Box>
+              <Button variant="contained" component="label">
+                Nahrát obrázek
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImage}
+                  hidden
+                />
+              </Button>
+              {imageToBeUploaded &&
+                <Button
+                  onClick={() => {
+                    setImageToBeUploaded(null)
+                    setTemporaryImageUrl(null)
+                  }}
+                >
+                  Zrušit
+                </Button>
+              }
+            </Box>
+            <Stack>
+              <Controller
+                name='category_id'
+                control={control}
+                render={({ field: { onChange } }) => (
+                  <FormControl>
+                    <Autocomplete
+                      open={isCategoriesSelectOpen}
+                      onOpen={() => setIsCategoriesSelectOpen(true)}
+                      onClose={() => setIsCategoriesSelectOpen(false)}
+                      onChange={(_, newValue) =>
+                        newValue && onChange(newValue.id)
+                      }
+                      loading={isLoadingMerchCategories}
+                      loadingText='Načítání...'
+                      options={merchCategories ?? []}
+                      getOptionLabel={(option) => option.name}
+                      renderInput={(params) =>
+                        <TextField
+                          {...params}
+                          label='Zvol variantu'
+                          error={isErrorMerchCategories}
+                          helperText={errorMerchCategories?.message}
+                        />
+                      }
+                    />
+                  </FormControl>
+                )}
+              />
+              {selectedCategoryId && <Subform category={merchCategoriesMap.get(selectedCategoryId)}/>}
+            </Stack>
             <Controller
               name='archived'
               control={control}
@@ -103,32 +199,13 @@ export function MerchForm ({ editMode, merch }: MerchFormProps) {
                 </FormGroup>
               )}
             />
-            <Controller
-              name='category_id'
-              control={control}
-              render={({ field }) => (
-                <FormControl>
-                  <Select {...field} label='Kategorie'>
-                    {merchCategories?.map((category) => (
-                      <MenuItem key={category.id} value={category.id}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            />
-            <Image src={temporaryImageUrl} width={100} height={100} alt='uploaded image'/>
-            <Button variant="contained" component="label">
-              Nahrát obrázek
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImage}
-                hidden
-              />
-            </Button>
-            <Button type='submit'>odeslat</Button>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'end',
+              my: '1rem'
+            }}>
+              <Button type='submit'>odeslat</Button>
+            </Box>
           </Box>
         </Paper>
       </Container>

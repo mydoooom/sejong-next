@@ -9,7 +9,7 @@
 
 @media (width >= map-get(variables.$breakpoints, 'sm')) {
   .newsPanel {
-    grid-template: 1fr 1fr/ 1fr 1fr;
+    grid-template: 1fr/ 1fr 1fr;
   }
 }
 
