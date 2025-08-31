@@ -4,6 +4,7 @@ $cardSize: 20rem;
 $avatarSize: $cardSize - 4rem;
 $imageOffset: 3rem;
 $dialogAvatarSize: 4.5rem;
+$assistantCoachScale: 0.85;
 
 .coaches {
   height: 100%;
@@ -26,6 +27,52 @@ $dialogAvatarSize: 4.5rem;
       margin: -$imageOffset auto 0;
       width: $avatarSize;
       height: $avatarSize;
+      overflow: hidden;
+
+      .image {
+        object-fit: cover;
+      }
+    }
+
+    .name {
+      margin: 1.2rem 0 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin-bottom: 1rem;
+      color: dimgray;
+    }
+
+    .button {
+      margin: auto .5rem .5rem;
+    }
+  }
+}
+
+.assistantCoaches {
+  padding-top: 2rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  .coach {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: calc($assistantCoachScale * $cardSize);
+    overflow: visible;
+    margin-top: $imageOffset + 1rem;
+
+    .avatar {
+      position: relative;
+      background-color: grey;
+      margin: -$imageOffset auto 0;
+      width: calc($assistantCoachScale * $avatarSize);
+      height: calc($assistantCoachScale * $avatarSize);
       overflow: hidden;
 
       .image {
