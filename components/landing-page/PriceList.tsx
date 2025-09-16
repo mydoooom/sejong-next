@@ -58,7 +58,7 @@ export default function PriceList() {
               <tr>
                 <td>
                   <span>
-                    {`${t('children-6-12', { ns: 'common' })} (${t('friday', { ns: 'common'})} 15:00)`}:
+                    {`${t('children-6-12', { ns: 'common' })} (${t('friday', { ns: 'common'})} 15:30)`}:
                   </span>
                 </td>
                 <td>{`${priceInCZK(2400)}/${t('term')}`}</td>

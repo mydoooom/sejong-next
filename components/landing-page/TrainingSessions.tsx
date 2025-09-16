@@ -50,7 +50,7 @@ export default function TrainingSessions ({ gMapsApiKey }: Props) {
       groups: [
         {
           name: t('children-6-12', { ns: 'common' }),
-          time: `${t('friday', { ns: 'common' })} 15:00 – 16:00`,
+          time: `${t('friday', { ns: 'common' })} 15:30 – 16:30`,
         },
         {
           name: t('adults-beginners', { ns: 'common' }),
