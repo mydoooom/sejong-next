@@ -10,8 +10,10 @@ import cssvaz from '../../public/logos/footer/cssvaz.png'
 import wte from '../../public/logos/footer/wte.png'
 import moohwa from '../../public/logos/footer/moohwa.png'
 import prg from '../../public/logos/footer/prg.png'
-import prg4 from '../../public/logos/footer/prg4.png'
+// import prg4 from '../../public/logos/footer/prg4.png'
+import ceng from '../../public/logos/footer/ceng.png'
 import construct from '../../public/logos/footer/construct.png'
+
 
 export default function Footer () {
   const sponsors = [
@@ -21,7 +23,7 @@ export default function Footer () {
     { name: 'World Taekwondo Europe', url: 'https://worldtaekwondoeurope.org/', logo: wte },
     { name: 'Moohwa', url: 'https://moohwa.net/', logo: moohwa },
     { name: 'Prague', url: 'https://www.praha.eu/', logo: prg },
-    { name: 'Prague 4', url: 'https://www.praha4.cz/', logo: prg4 },
+    { name: 'C-ENG', url: 'https://www.c-eng.cz/', logo: ceng },
     { name: 'Construct Service', url: 'https://www.constructservice.cz/', logo: construct },
   ]
   const { pathname } = useRouter()
